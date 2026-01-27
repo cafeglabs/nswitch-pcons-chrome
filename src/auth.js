@@ -189,7 +189,7 @@ class AuthenticationHandler {
    * Check authentication status
    */
   checkAuth() {
-    return this.isAuthenticated && !this.auth.isAccessTokenExpired();
+    return this.isAuthenticated && !!this.auth.sessionToken;
   }
 }
 

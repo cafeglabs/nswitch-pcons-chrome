@@ -79,9 +79,17 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 });
 
 /**
- * Initialize the extension
+ * Initialize the extension (guarded against concurrent calls)
  */
+let initPromise = null;
+
 async function initialize() {
+  if (initPromise) return initPromise;
+  initPromise = _doInitialize();
+  return initPromise;
+}
+
+async function _doInitialize() {
   authHandler = new AuthenticationHandler();
   const authenticated = await authHandler.initialize();
 
@@ -114,6 +122,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     try {
       switch (request.type) {
         case 'GET_AUTH_STATUS':
+          if (authHandler && !authHandler.isAuthenticated) {
+            // Service worker may have restarted; try re-initializing from storage
+            await authHandler.initialize();
+            if (authHandler.isAuthenticated) {
+              await initializeParentalControl();
+            }
+          }
           sendResponse({
             authenticated: authHandler && authHandler.checkAuth()
           });
@@ -251,6 +266,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.bedtimeEnd) {
               await deviceForBedtime.setBedtimeEnd(request.bedtimeEnd);
             }
+            sendResponse({ success: true });
+          } else {
+            sendResponse({ success: false, error: 'Device not found' });
+          }
+          break;
+
+        case 'CANCEL_EXTRA_TIME':
+          const deviceForCancel = devices[request.deviceId];
+          if (deviceForCancel) {
+            await deviceForCancel.cancelExtraTime();
             sendResponse({ success: true });
           } else {
             sendResponse({ success: false, error: 'Device not found' });

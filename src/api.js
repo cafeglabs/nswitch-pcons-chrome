@@ -457,7 +457,20 @@ class Device {
   async addExtraTime(minutes) {
     await this.api._apiRequest('/v2/actions/device/updateExtraPlayingTime', 'POST', {
       deviceId: this.deviceId,
+      status: 'TO_ADDED',
       additionalTime: minutes
+    });
+    await this.update();
+  }
+
+  /**
+   * Cancel extra playtime
+   */
+  async cancelExtraTime() {
+    await this.api._apiRequest('/v2/actions/device/updateExtraPlayingTime', 'POST', {
+      deviceId: this.deviceId,
+      status: 'TO_CANCELED',
+      additionalTime: 0
     });
     await this.update();
   }

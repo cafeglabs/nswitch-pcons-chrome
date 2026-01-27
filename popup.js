@@ -435,6 +435,19 @@ document.querySelectorAll('.btn-action').forEach(btn => {
           showError('Failed to turn off limit: ' + error.message);
         }
         break;
+      case 'cancel-extension':
+        if (!currentDeviceId) return;
+        try {
+          await sendMessage({
+            type: 'CANCEL_EXTRA_TIME',
+            deviceId: currentDeviceId
+          });
+          await refreshCurrentDevice();
+          showError('Extra time cancelled');
+        } catch (error) {
+          showError('Failed to cancel extra time: ' + error.message);
+        }
+        break;
     }
   });
 });

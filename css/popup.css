@@ -361,13 +361,21 @@ body {
   gap: 8px;
 }
 
-.action-buttons .btn:nth-child(4),
 .action-buttons .btn:nth-child(5) {
-  grid-column: span 1;
+  grid-column: 1 / 2;
 }
 
-.action-buttons .btn:nth-child(5) {
+.action-buttons .btn:nth-child(6) {
   grid-column: 2 / 4;
+}
+
+.btn-cancel {
+  background: #666;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #555;
 }
 
 .input-group {
@@ -685,5 +693,14 @@ body {
 
   .btn-action:hover {
     background: #2a2a2a;
+  }
+
+  .btn-cancel {
+    background: #555;
+    color: #e0e0e0;
+  }
+
+  .btn-cancel:hover {
+    background: #444;
   }
 }
