@@ -182,6 +182,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           if (!parentalControlAPI) {
             await initializeParentalControl();
           }
+          // Re-fetch fresh data from API for each device
+          if (devices) {
+            for (const deviceId in devices) {
+              try {
+                await devices[deviceId].update();
+              } catch (error) {
+                console.error('Failed to refresh device:', deviceId, error);
+              }
+            }
+          }
           const deviceList = Object.values(devices).map(device => ({
             deviceId: device.deviceId,
             name: device.name,

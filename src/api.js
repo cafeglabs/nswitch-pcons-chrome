@@ -239,20 +239,14 @@ class NintendoParentalControl {
    * Get daily summaries for a device
    */
   async getDailySummaries(deviceId) {
-    return await this._apiRequest('/v2/actions/playSummary/fetchDailySummaries', 'POST', {
-      deviceId: deviceId
-    });
+    return await this._apiRequest(`/v2/actions/playSummary/fetchDailySummaries?deviceId=${deviceId}`, 'GET');
   }
 
   /**
    * Get monthly summary for a device
    */
   async getMonthlySummary(deviceId, year, month) {
-    return await this._apiRequest('/v2/actions/playSummary/fetchMonthlySummary', 'POST', {
-      deviceId: deviceId,
-      year: year,
-      month: month
-    });
+    return await this._apiRequest(`/v2/actions/playSummary/fetchMonthlySummary?deviceId=${deviceId}&year=${year}&month=${month}`, 'GET');
   }
 }
 
@@ -287,15 +281,20 @@ class Device {
   }
 
   /**
-   * Refresh device data with full parental control settings
+   * Refresh device data with full parental control settings and daily summaries
    */
   async update() {
-    // Fetch parental control settings directly
-    // (fetchOwnedDevice returns 405, but we already have basic device info)
-    // Try GET method since POST returns 405
+    // Fetch parental control settings (limits, bedtime, whitelist, etc.)
     const settings = await this.api._apiRequest(`/v2/actions/parentalControlSetting/fetchParentalControlSetting?deviceId=${this.deviceId}`, 'GET');
-
     this._parseParentalControlSettings(settings);
+
+    // Fetch daily summaries for actual play data (today's playtime, players, apps)
+    try {
+      const summaryData = await this.api.getDailySummaries(this.deviceId);
+      this._parseDailySummary(summaryData);
+    } catch (error) {
+      console.error('Failed to fetch daily summaries:', error);
+    }
 
     return this;
   }
@@ -366,6 +365,64 @@ class Device {
   }
 
   /**
+   * Parse daily summary data to get actual play times, players, and applications
+   */
+  _parseDailySummary(data) {
+    if (!data) return;
+
+    const summaries = data.dailySummaries || data.items || [];
+    if (summaries.length === 0) return;
+
+    // Find today's summary
+    const today = new Date().toISOString().split('T')[0];
+    const todaySummary = summaries.find(s => s.date === today) || summaries[0];
+    if (!todaySummary) return;
+
+    // Update today's total playing time
+    if (todaySummary.playingTime !== undefined) {
+      this.todayPlayingTime = todaySummary.playingTime;
+    }
+
+    // Update players from summary data
+    const players = todaySummary.players || [];
+    if (players.length > 0) {
+      this.players = players.map(p => ({
+        nickname: p.profile?.nickname || '',
+        player_image: p.profile?.imageUri || '',
+        playing_time: p.playingTime || 0
+      }));
+    }
+
+    // Collect applications from players' playedGames, aggregating across players
+    const appMap = new Map();
+    for (const player of players) {
+      const games = player.playedGames || [];
+      for (const game of games) {
+        const appId = game.meta?.applicationId || game.meta?.title;
+        const playTime = game.playingTime || 0;
+        if (appMap.has(appId)) {
+          appMap.get(appId).today_time_played += playTime;
+          appMap.get(appId).playingTime += playTime;
+        } else {
+          appMap.set(appId, {
+            name: game.meta?.title || '',
+            title: game.meta?.title || '',
+            image_url: game.meta?.imageUri?.small || '',
+            imageUrl: game.meta?.imageUri?.small || '',
+            today_time_played: playTime,
+            playingTime: playTime
+          });
+        }
+      }
+    }
+
+    const apps = Array.from(appMap.values());
+    if (apps.length > 0) {
+      this.applications = apps;
+    }
+  }
+
+  /**
    * Update maximum daily playtime
    */
   async updateMaxDailyPlaytime(minutes) {
@@ -400,7 +457,7 @@ class Device {
   async addExtraTime(minutes) {
     await this.api._apiRequest('/v2/actions/device/updateExtraPlayingTime', 'POST', {
       deviceId: this.deviceId,
-      duration: minutes
+      additionalTime: minutes
     });
     await this.update();
   }
@@ -465,9 +522,8 @@ class Device {
       return 'Unlimited';
     }
 
-    // Calculate actual remaining time: (daily limit - time played) + bonus time
-    const baseRemaining = Math.max(0, this.limitTime - this.todayPlayingTime);
-    const totalRemaining = baseRemaining + this.todayTimeRemaining;
+    // Calculate actual remaining time: daily limit + bonus time - time played
+    const totalRemaining = Math.max(0, this.limitTime + this.todayTimeRemaining - this.todayPlayingTime);
 
     const hours = Math.floor(totalRemaining / 60);
     const minutes = totalRemaining % 60;
