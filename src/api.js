@@ -464,18 +464,6 @@ class Device {
   }
 
   /**
-   * Cancel extra playtime
-   */
-  async cancelExtraTime() {
-    await this.api._apiRequest('/v2/actions/device/updateExtraPlayingTime', 'POST', {
-      deviceId: this.deviceId,
-      status: 'TO_CANCELED',
-      additionalTime: 0
-    });
-    await this.update();
-  }
-
-  /**
    * Set bedtime alarm (note: this likely requires full bedtime object)
    */
   async setBedtimeAlarm(startTime, endTime) {

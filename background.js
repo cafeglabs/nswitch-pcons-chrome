@@ -272,16 +272,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }
           break;
 
-        case 'CANCEL_EXTRA_TIME':
-          const deviceForCancel = devices[request.deviceId];
-          if (deviceForCancel) {
-            await deviceForCancel.cancelExtraTime();
-            sendResponse({ success: true });
-          } else {
-            sendResponse({ success: false, error: 'Device not found' });
-          }
-          break;
-
         case 'SUSPEND_SOFTWARE':
           const deviceForSuspend = devices[request.deviceId];
           if (deviceForSuspend) {
