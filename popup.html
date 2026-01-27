@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nintendo Switch Parental Controls</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Nintendo Switch Parental Controls</h1>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen">
+      <div class="login-container">
+        <div class="logo">
+          <svg viewBox="0 0 100 100" width="80" height="80">
+            <rect x="10" y="10" width="80" height="80" rx="15" fill="#e60012"/>
+            <circle cx="35" cy="30" r="8" fill="white"/>
+            <rect x="20" y="55" width="60" height="25" rx="5" fill="white"/>
+          </svg>
+        </div>
+        <h2>Welcome</h2>
+        <p class="subtitle">Sign in to manage your Nintendo Switch parental controls</p>
+        <button id="loginButton" class="btn btn-primary">Sign in with Nintendo</button>
+        <div class="advanced-login">
+          <details>
+            <summary>Advanced: Login with Session Token</summary>
+            <div class="manual-login">
+              <input type="text" id="sessionTokenInput" placeholder="Enter session token" />
+              <button id="manualLoginButton" class="btn btn-secondary">Login</button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="screen hidden">
+      <!-- Account Info -->
+      <div class="account-info">
+        <button id="logoutButton" class="btn btn-link">Logout</button>
+        <button id="refreshButton" class="btn btn-icon">🔄</button>
+      </div>
+
+      <!-- Devices List -->
+      <div id="devicesList" class="devices-container">
+        <div class="loading">Loading devices...</div>
+      </div>
+
+      <!-- Device Details Modal -->
+      <div id="deviceModal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="modalDeviceName">Device</h2>
+            <button id="closeModal" class="btn btn-close">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="device-stats">
+              <div class="stat-card">
+                <div class="stat-label">Time Played Today</div>
+                <div class="stat-value" id="modalPlayingTime">0h 0m</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Time Remaining</div>
+                <div class="stat-value" id="modalTimeRemaining">0h 0m</div>
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3>Add Time</h3>
+              <div class="action-buttons">
+                <button class="btn btn-action" data-action="bonus-5">5 min</button>
+                <button class="btn btn-action" data-action="bonus-15">15 min</button>
+                <button class="btn btn-action" data-action="bonus-30">30 min</button>
+                <button class="btn btn-action" data-action="bonus-60">1 hr</button>
+                <button class="btn btn-action" data-action="limit-off">⭐ Daily Limit Off</button>
+              </div>
+            </div>
+
+            <div class="control-section">
+              <h3>Daily Playtime Limit</h3>
+              <div class="input-group">
+                <input type="number" id="playtimeLimitInput" min="0" max="360" step="15" placeholder="Minutes" />
+                <button id="setPlaytimeLimitBtn" class="btn btn-primary">Set Limit</button>
+              </div>
+              <p class="help-text">Set to 0 for unlimited playtime</p>
+            </div>
+
+            <div class="control-section">
+              <h3>Bedtime Settings</h3>
+              <div class="input-group">
+                <label>
+                  <span>Bedtime Start:</span>
+                  <input type="time" id="bedtimeAlarmInput" />
+                </label>
+                <label>
+                  <span>Bedtime End:</span>
+                  <input type="time" id="bedtimeEndInput" />
+                </label>
+                <button id="setBedtimeBtn" class="btn btn-primary">Set Bedtime</button>
+              </div>
+            </div>
+
+            <div id="playersSection" class="control-section">
+              <h3>Players</h3>
+              <div id="playersList" class="players-list"></div>
+            </div>
+
+            <div id="applicationsSection" class="control-section">
+              <h3>Recent Applications</h3>
+              <div id="applicationsList" class="applications-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="error-message hidden"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="version">v<span id="version">1.1.0</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/yourusername/nintendo-switch-parental-controls-extension" target="_blank">GitHub</a>
+        <span>•</span>
+        <a href="https://github.com/yourusername/nintendo-switch-parental-controls-extension/issues" target="_blank">Report Issue</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
