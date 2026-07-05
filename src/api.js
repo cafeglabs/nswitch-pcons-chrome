@@ -175,13 +175,13 @@ class NintendoParentalControl {
 
     const headers = {
       'Authorization': `Bearer ${this.auth.accessToken}`,
-      'User-Agent': 'moon_ANDROID/2.3.2 (com.nintendo.znma; build:640; ANDROID 34)',
+      'User-Agent': 'moon_ANDROID/2.4.0 (com.nintendo.znma; build:660; ANDROID 34)',
       'X-Moon-App-Id': 'com.nintendo.znma',
       'X-Moon-Os': 'ANDROID',
       'X-Moon-Os-Version': '34',
       'X-Moon-Model': 'Pixel 4 XL',
-      'X-Moon-App-Display-Version': '2.3.2',
-      'X-Moon-App-Internal-Version': '640',
+      'X-Moon-App-Display-Version': '2.4.0',
+      'X-Moon-App-Internal-Version': '660',
       'X-Moon-TimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone,
       'X-Moon-Os-Language': navigator.language || 'en-US',
       'X-Moon-App-Language': navigator.language || 'en-US'
