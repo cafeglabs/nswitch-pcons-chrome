@@ -95,33 +95,33 @@ class AuthenticationHandler {
    */
   async completeLogin(sessionTokenCode) {
     try {
-      console.log('Starting login process with session token code');
+      if (DEBUG) console.log('Starting login process with session token code');
 
       // Exchange code for session token
-      console.log('Exchanging code for session token...');
+      if (DEBUG) console.log('Exchanging code for session token...');
       await this.auth.getSessionToken(sessionTokenCode);
-      console.log('Session token obtained');
+      if (DEBUG) console.log('Session token obtained');
 
       // Get access token
-      console.log('Getting access token...');
+      if (DEBUG) console.log('Getting access token...');
       await this.auth.refreshAccessToken();
-      console.log('Access token obtained');
+      if (DEBUG) console.log('Access token obtained');
 
       // Get account info
-      console.log('Fetching account info...');
+      if (DEBUG) console.log('Fetching account info...');
       await this.auth.getAccountInfo();
-      console.log('Account info retrieved, ID:', this.auth.accountId);
+      if (DEBUG) console.log('Account info retrieved, ID:', this.auth.accountId);
 
       // Save auth data
-      console.log('Saving authentication data...');
+      if (DEBUG) console.log('Saving authentication data...');
       await this.saveAuthData();
-      console.log('Authentication data saved');
+      if (DEBUG) console.log('Authentication data saved');
 
       this.isAuthenticated = true;
 
       // Notify popup that login is complete
       chrome.runtime.sendMessage({ type: 'AUTH_COMPLETE' });
-      console.log('Login completed successfully');
+      if (DEBUG) console.log('Login completed successfully');
 
       return true;
     } catch (error) {

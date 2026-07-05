@@ -12,6 +12,7 @@ const API_ENDPOINTS = {
 };
 
 const CLIENT_ID = '54789befb391a838';  // Nintendo Parental Controls app client ID
+const DEBUG = false; // Set to true only for local troubleshooting
 
 class NintendoAuth {
   constructor() {
@@ -120,7 +121,6 @@ class NintendoAuth {
     }
 
     const data = await response.json();
-    console.log('Token response:', data);
 
     if (!data.id_token) {
       throw new Error('No id_token in response');
@@ -199,12 +199,11 @@ class NintendoParentalControl {
     }
 
     const url = `${API_ENDPOINTS.PARENTAL_CONTROL}${path}`;
-    console.log(`API Request: ${method} ${url}`);
-    console.log('Request headers:', headers);
+    if (DEBUG) console.log(`API Request: ${method} ${url}`);
 
     const response = await fetch(url, options);
 
-    console.log(`API Response: ${response.status} ${response.statusText}`);
+    if (DEBUG) console.log(`API Response: ${response.status} ${response.statusText}`);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -213,7 +212,6 @@ class NintendoParentalControl {
     }
 
     const data = await response.json();
-    console.log('API Response data:', data);
     return data;
   }
 

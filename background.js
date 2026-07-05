@@ -5,6 +5,7 @@
 
 // Import required modules
 importScripts('src/api.js', 'src/storage.js', 'src/auth.js');
+// DEBUG is declared once in src/api.js and shared via the service worker's global scope
 
 // Global instances
 let authHandler = null;
@@ -17,7 +18,7 @@ let authTabId = null;
  */
 function handleAuthRedirect(url, tabId) {
   try {
-    console.log('Processing auth redirect:', url);
+    if (DEBUG) console.log('Processing auth redirect:', url);
 
     // Extract session token code
     const urlForParsing = url.replace('npf54789befb391a838://', 'https://');
@@ -26,8 +27,6 @@ function handleAuthRedirect(url, tabId) {
     const sessionTokenCode = hashParams.get('session_token_code');
 
     if (sessionTokenCode) {
-      console.log('Captured session token code:', sessionTokenCode.substring(0, 20) + '...');
-
       // Store for retrieval
       chrome.storage.local.set({
         captured_session_token_code: sessionTokenCode,
@@ -40,17 +39,17 @@ function handleAuthRedirect(url, tabId) {
         sessionTokenCode: sessionTokenCode
       }).catch(() => {
         // Ignore if no listeners
-        console.log('No auth helper page listening');
+        if (DEBUG) console.log('No auth helper page listening');
       });
 
       // Close the auth tab
       if (tabId) {
         chrome.tabs.remove(tabId).catch(() => {
-          console.log('Could not close auth tab');
+          if (DEBUG) console.log('Could not close auth tab');
         });
       } else if (authTabId) {
         chrome.tabs.remove(authTabId).catch(() => {
-          console.log('Could not close tracked auth tab');
+          if (DEBUG) console.log('Could not close tracked auth tab');
         });
         authTabId = null;
       }
@@ -66,14 +65,14 @@ function handleAuthRedirect(url, tabId) {
  */
 chrome.webNavigation.onErrorOccurred.addListener((details) => {
   if (details.url && details.url.startsWith('npf54789befb391a838://auth')) {
-    console.log('Detected Nintendo auth redirect via onErrorOccurred');
+    if (DEBUG) console.log('Detected Nintendo auth redirect via onErrorOccurred');
     handleAuthRedirect(details.url, details.tabId);
   }
 });
 
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   if (details.url && details.url.startsWith('npf54789befb391a838://auth')) {
-    console.log('Detected Nintendo auth redirect via onBeforeNavigate');
+    if (DEBUG) console.log('Detected Nintendo auth redirect via onBeforeNavigate');
     handleAuthRedirect(details.url, details.tabId);
   }
 });
@@ -94,10 +93,10 @@ async function _doInitialize() {
   const authenticated = await authHandler.initialize();
 
   if (authenticated) {
-    console.log('User is authenticated');
+    if (DEBUG) console.log('User is authenticated');
     await initializeParentalControl();
   } else {
-    console.log('User needs to authenticate');
+    if (DEBUG) console.log('User needs to authenticate');
   }
 }
 
@@ -108,7 +107,7 @@ async function initializeParentalControl() {
   try {
     parentalControlAPI = new NintendoParentalControl(authHandler.getAuth());
     devices = await parentalControlAPI.initialize();
-    console.log('Devices loaded:', Object.keys(devices).length);
+    if (DEBUG) console.log('Devices loaded:', Object.keys(devices).length);
   } catch (error) {
     console.error('Failed to initialize parental control:', error);
   }
@@ -142,10 +141,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         case 'OPEN_AUTH_TAB':
           // Open the auth tab from background script
-          console.log('Opening auth tab with URL:', request.url);
+          if (DEBUG) console.log('Opening auth tab with URL:', request.url);
           chrome.tabs.create({ url: request.url }, (tab) => {
             authTabId = tab.id;
-            console.log('Auth tab opened:', authTabId);
+            if (DEBUG) console.log('Auth tab opened:', authTabId);
             sendResponse({ success: true, tabId: tab.id });
           });
           return true; // Keep channel open for async response
@@ -154,7 +153,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'AUTH_TAB_OPENED':
           // Track the auth tab ID for automatic closure
           authTabId = request.tabId;
-          console.log('Tracking auth tab:', authTabId);
+          if (DEBUG) console.log('Tracking auth tab:', authTabId);
           sendResponse({ success: true });
           break;
 
@@ -325,7 +324,7 @@ setInterval(async () => {
       for (const deviceId in devices) {
         await devices[deviceId].update();
       }
-      console.log('Devices refreshed');
+      if (DEBUG) console.log('Devices refreshed');
     } catch (error) {
       console.error('Failed to refresh devices:', error);
     }
@@ -334,12 +333,12 @@ setInterval(async () => {
 
 // Initialize on install or startup
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Extension installed');
+  if (DEBUG) console.log('Extension installed');
   initialize();
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  console.log('Extension started');
+  if (DEBUG) console.log('Extension started');
   initialize();
 });
 
