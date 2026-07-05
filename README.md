@@ -30,26 +30,13 @@ An open-source Chrome browser extension for monitoring and managing Nintendo Swi
    cd nswitch-pcons-chrome
    ```
 
-2. Generate icon images (required):
-   ```bash
-   # Install dependencies if you have ImageMagick
-   convert icons/icon.svg -resize 16x16 icons/icon16.png
-   convert icons/icon.svg -resize 48x48 icons/icon48.png
-   convert icons/icon.svg -resize 128x128 icons/icon128.png
-
-   # Or use any online SVG to PNG converter to create:
-   # - icons/icon16.png (16x16)
-   # - icons/icon48.png (48x48)
-   # - icons/icon128.png (128x128)
-   ```
-
-3. Load the extension in Chrome:
+2. Load the extension in Chrome:
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable "Developer mode" (toggle in top-right corner)
    - Click "Load unpacked"
    - Select the `nswitch-pcons-chrome` folder
 
-4. The extension icon should appear in your browser toolbar
+3. The extension icon should appear in your browser toolbar
 
 ## Usage
 
@@ -151,7 +138,7 @@ nswitch-pcons-chrome/
 │   ├── auth.js             # Authentication handler
 │   └── storage.js          # Encrypted storage utilities
 ├── icons/
-│   ├── icon.svg            # Source icon
+│   ├── icon-source.png     # Master logo (transparent, square) for regenerating sizes
 │   ├── icon16.png          # 16x16 icon
 │   ├── icon48.png          # 48x48 icon
 │   └── icon128.png         # 128x128 icon

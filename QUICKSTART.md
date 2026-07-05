@@ -17,20 +17,7 @@ git clone https://github.com/cafeglabs/nswitch-pcons-chrome.git
 cd nswitch-pcons-chrome
 ```
 
-### 2. Generate Icons
-
-**Option A - Using ImageMagick (if installed):**
-```bash
-./generate-icons.sh
-```
-
-**Option B - Manual (if ImageMagick not available):**
-1. Visit https://cloudconvert.com/svg-to-png
-2. Upload `icons/icon.svg`
-3. Convert to 16x16, 48x48, and 128x128
-4. Save as `icon16.png`, `icon48.png`, `icon128.png` in the `icons/` folder
-
-### 3. Load in Chrome
+### 2. Load in Chrome
 
 1. Open Chrome
 2. Go to `chrome://extensions/`
@@ -39,7 +26,7 @@ cd nswitch-pcons-chrome
 5. Select the `nswitch-pcons-chrome` folder
 6. Extension icon should appear in your toolbar
 
-### 4. Authenticate
+### 3. Authenticate
 
 1. Click the extension icon
 2. Click "Sign in with Nintendo"
@@ -58,9 +45,6 @@ You're done! You can now:
 - Suspend running games remotely
 
 ## Troubleshooting
-
-### Icons won't load?
-Make sure you completed step 2 and have all three PNG files in the `icons/` folder.
 
 ### Authentication fails?
 - Ensure the official Nintendo app is NOT installed on your device
