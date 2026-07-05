@@ -31,7 +31,7 @@ This was fixed in the latest version. Make sure you:
 
 1. **Reload the extension**:
    - Go to `chrome://extensions/`
-   - Find "Nintendo Switch Parental Controls"
+   - Find "Switch Family Controls"
    - Click the reload button (🔄)
 
 2. **Clear old auth data**:
@@ -87,7 +87,7 @@ The extension auto-refreshes every 5 minutes. To manually refresh:
 ### "Extension requires additional permissions"
 
 1. Go to `chrome://extensions/`
-2. Find "Nintendo Switch Parental Controls"
+2. Find "Switch Family Controls"
 3. Make sure these permissions are enabled:
    - Storage
    - Web Navigation

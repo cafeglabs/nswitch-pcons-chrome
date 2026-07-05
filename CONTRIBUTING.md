@@ -1,4 +1,4 @@
-# Contributing to Nintendo Switch Parental Controls Extension
+# Contributing to Switch Family Controls
 
 Thank you for considering contributing to this project! This document provides guidelines for contributing.
 
@@ -41,7 +41,7 @@ Feature requests are welcome! Please:
 #### Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/nintendo-switch-parental-controls-extension.git`
+2. Clone your fork: `git clone https://github.com/yourusername/nswitch-pcons-chrome.git`
 3. Create a feature branch: `git checkout -b feature/your-feature-name`
 4. Make your changes
 5. Test thoroughly

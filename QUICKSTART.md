@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get up and running with the Nintendo Switch Parental Controls extension in under 5 minutes!
+Get up and running with the Switch Family Controls extension in under 5 minutes!
 
 ## Prerequisites
 
@@ -13,8 +13,8 @@ Get up and running with the Nintendo Switch Parental Controls extension in under
 ### 1. Download the Extension
 
 ```bash
-git clone https://github.com/yourusername/nintendo-switch-parental-controls-extension.git
-cd nintendo-switch-parental-controls-extension
+git clone https://github.com/cafeglabs/nswitch-pcons-chrome.git
+cd nswitch-pcons-chrome
 ```
 
 ### 2. Generate Icons
@@ -36,7 +36,7 @@ cd nintendo-switch-parental-controls-extension
 2. Go to `chrome://extensions/`
 3. Toggle "Developer mode" ON (top-right corner)
 4. Click "Load unpacked"
-5. Select the `nintendo-switch-parental-controls-extension` folder
+5. Select the `nswitch-pcons-chrome` folder
 6. Extension icon should appear in your toolbar
 
 ### 4. Authenticate

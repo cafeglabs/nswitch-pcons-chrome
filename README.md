@@ -1,4 +1,4 @@
-# Nintendo Switch Parental Controls - Chrome Extension
+# Switch Family Controls (Chrome Extension)
 
 An open-source Chrome browser extension for monitoring and managing Nintendo Switch parental controls. Built based on the [Home Assistant Nintendo Parental Controls integration](https://www.home-assistant.io/integrations/nintendo_parental_controls/).
 
@@ -26,8 +26,8 @@ An open-source Chrome browser extension for monitoring and managing Nintendo Swi
 
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/yourusername/nintendo-switch-parental-controls-extension.git
-   cd nintendo-switch-parental-controls-extension
+   git clone https://github.com/cafeglabs/nswitch-pcons-chrome.git
+   cd nswitch-pcons-chrome
    ```
 
 2. Generate icon images (required):
@@ -47,7 +47,7 @@ An open-source Chrome browser extension for monitoring and managing Nintendo Swi
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable "Developer mode" (toggle in top-right corner)
    - Click "Load unpacked"
-   - Select the `nintendo-switch-parental-controls-extension` folder
+   - Select the `nswitch-pcons-chrome` folder
 
 4. The extension icon should appear in your browser toolbar
 
@@ -139,7 +139,7 @@ All API requests require valid OAuth access tokens, which are automatically refr
 ### Project Structure
 
 ```
-nintendo-switch-parental-controls-extension/
+nswitch-pcons-chrome/
 ├── manifest.json           # Extension manifest (Manifest V3)
 ├── background.js           # Service worker for background tasks
 ├── popup.html              # Popup UI HTML
@@ -227,7 +227,7 @@ This extension:
 ### "Authentication failed"
 
 - Make sure the official Nintendo Parental Controls app is NOT installed on your device
-- Try clearing the extension data: Settings → Extensions → Nintendo Switch Parental Controls → Remove
+- Try clearing the extension data: Settings → Extensions → Switch Family Controls → Remove
 - Reinstall the extension
 
 ### Device data not updating
