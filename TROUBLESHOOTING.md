@@ -91,8 +91,6 @@ The extension auto-refreshes every 5 minutes. To manually refresh:
 3. Make sure these permissions are enabled:
    - Storage
    - Web Navigation
-   - Tabs
-   - Web Request
 
 ### CORS or network errors
 

@@ -5,8 +5,7 @@
   "description": "Monitor and manage Nintendo Switch parental controls from your browser",
   "permissions": [
     "storage",
-    "webNavigation",
-    "tabs"
+    "webNavigation"
   ],
   "host_permissions": [
     "https://app.lp1.znma.srv.nintendo.net/*",
